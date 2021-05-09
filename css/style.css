@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand|IM+Fell+DW+Pica+SC|Pacifico|Arya');
+body,div{padding:0 0 0 0;margin:0 0 0 0;       
+    font-family:  'Tw Cen MT',"Quicksand","Century Gothic","Apple Gothic",AppleGothic,"URW Gothic L","Avant Garde",Futura,sans-serif;
+}
+body{background-color:#000c;overflow:hidden;}
+#screen{clip-path: inset(5px 5px); height:100vh; background-color:#412b15;}
+.map {
+  transition: top 2s ease 0s,left 2s ease 0s;}
+.map svg{
+  overflow:visible;
+}
+#screen img{ margin-top: -20px;margin-left: -20px;}
+.map{width:100%;height:100%;position:relative;padding:0 0 0 0;}
+#map > svg, #map > img, #map > div {margin-top:25%;margin-left:50%;} 
+#map > img{
+  margin-top:22%;
+  position:absolute;pointer-events: none; 
+  transform-origin:50% 50%;
+  transform:rotate(0deg);
+  transition: top 2s ease 0s,left 2s ease 0s;
+}
+svg > path#mappath{
+       mask: url(#mask);
+  }
+
+svg > * {
+    pointer-events:none;
+}
+svg > path {pointer-events:all;}
+
+.fog {fill:#000; pointer-events: none; width:500%;height:500%;}
+svg mask .seen{fill:url(#litColorGrad)} 
+svg mask .seen.infra{fill:#f004; fill:url(#infraGrad);}
+svg mask .been, svg mask .been.seen, svg mask .been.seen.infra{fill:#111;}
+
+svg > circle.lit, svg > circle.seen {fill:#fff4; fill:url(#litColorGrad);}
+svg > circle.infra, svg > circle.infra.seen {fill:#f004; fill:url(#infraColorGrad);}
+
+#fog { position:absolute;top:0px; width:100%;height:100%;pointer-events: none;
+}
+#fog div{
+  background-color:#000;min-width:10px;min-height:10px; position:absolute;pointer-events: none;
+  border:thin solid black; transition:background-color 1s ease 0s,border 1s ease 0s;
+}
+/*#fog div{border:thin solid #00f6;background-color:#00f6;}*/
+#fog .been{background-color:#000a;border:none;}
+#fog .infra{background-color:#f004;border:none;}
+#fog .lit{background-color:#0000;border:none;}
+
+.output{position:absolute; left: 80%; top:0px; width:200px; background-color:#fffc;padding:5px;}
+.preload{display:none;}
+.info{background:#fff1;width: 300px;height: 400px;left: 10px;top: 10px;position: absolute;}
+
+.regions{position:fixed;left:0px;top:0px; height:100%;display: flex;
+align-items: center; }
+.regions .region {overflow:hidden;width:300px; }
+.region .eimg{width:inherit;height:inherit;padding:2px;}
+.region .eimg img{width:100%;}
+.region .etxt{ min-height:20px; background-color:#ccc;padding:10px;margin-right:18px;}
+.region:not(:first-child){margin:15px -170px 5px -170px;}
+.region .monster, .region #monster{margin-top:-100%;}
+/*.region:not(:first-child) .etxt{margin:15px -170px 5px -170px;}*/

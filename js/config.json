@@ -1,0 +1,12 @@
+{
+    "svg":[
+        {"path":"currMap.svg","pos":{"x":100,"y":300},"face":"S"},
+        {"path":"nextMap.svg","pos":{"x":300,"y":-300}}
+    ],
+    "core":{    
+        "opts":[
+
+        ],
+        "char":"/js/char.json"
+    }
+}

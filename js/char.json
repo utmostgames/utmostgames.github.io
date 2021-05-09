@@ -1,0 +1,23 @@
+[
+  {
+    "name":"Pheargus",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5896/IIHVgt4iqHWyjLlp_W-u1A/max.png?1339995175",
+    "picOri":"S",
+    "square":20,
+    "special":["infra","arclight"]
+  },
+  {
+    "name":"Gilbert",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
+    "picOri":"S", 
+    "square":20,
+    "special":["infra"]
+  },
+  {
+    "name":"Faison",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
+    "picOri":"S", 
+    "square":20,
+    "special":[]
+  }
+]
