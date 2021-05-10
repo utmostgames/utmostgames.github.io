@@ -15,9 +15,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       };
       var _list=[], _chars=[];      
           
-      return {
-        SET:_set,GET:_get,LIST:_list,CHAR:_chars
-      };
+      return {        SET:_set,GET:_get,LIST:_list,CHAR:_chars      };
   }();
   FOG.CORE = function(){
     var _log = function(msg,opts){
@@ -225,7 +223,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           }
           cc.id=cc.name;
           cc.orient=cc.face; 
-          cc.moves=FOG.OPTS.GET("moves");    // to do feature: from sheet.dex
+          cc.moves=FOG.OPTS.GET("moves"); 
           cc.torches=3;
           cc.march=FOG.OPTS.GET("march");
           
@@ -246,12 +244,14 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         FOG.OPTS.SET("scale",1);
         FOG.OPTS.SET("zoom",1);
         FOG.OPTS.SET("fogsize",20);
-        FOG.OPTS.SET("lradius",Math.round(60/FOG.OPTS.GET("fogsize")));  //light radius is a function of Fog Size
+        FOG.OPTS.SET("lradius",Math.floor(FOG.OPTS.GET("fogsize")/3));  //light radius is a function of Fog Size
         FOG.OPTS.SET("zoomstep",1);
         FOG.OPTS.SET("cpos",{});   // this is the Centerpos searched for by FOG.SCREEN.MAP.FIND 
         FOG.OPTS.SET("been",FOG.CORE.DATA.GET("been")||[]);
         FOG.OPTS.SET("seen",[]);
         FOG.OPTS.SET("seenlast",[]);
+        FOG.OPTS.SET("torch","https://vignette.wikia.nocookie.net/darksouls/images/c/c6/Torch_%28DSIII%29.png/revision/latest?cb=20160729181452");
+        FOG.OPTS.SET("torchtime",5)
         FOG.OPTS.SET("instr","v: map mode<br/>z/x: zoom in/out<br/>Arrows: pan<br/><br/>c: character mode<br/>click: step <br/>b/n: prev/next char<br/>&lt; - &gt;: rotate<br/>i: char info<br/><br/>SPACE: escape");
         FOG.OPTS.SET("litclass","lit");
         FOG.OPTS.SET("beamclass","beam");
@@ -261,6 +261,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         FOG.OPTS.SET("time",0); // time tracker
         FOG.OPTS.SET("march",true);
         FOG.OPTS.SET("beamoff",true);
+        FOG.OPTS.SET("locked",false);
         
         FOG.OPTS.SET("debug",true);
       }
@@ -280,7 +281,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           window.addEventListener("resize", FOG.SCREEN.MAP.RESIZE);
         }();
         var _svg = function(){
-          var sPath;                                                                  /////// TO DO: Repathing (Entry)
+          var sPath;                                                      
             if (window.location.href.indexOf("neocities.org")>-1){
               sPath = "/i/fog/hcourt_n.svg";
             }
@@ -308,7 +309,6 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
     }; 
     return{LOG:_log,DATA:_data,CHAR:_char,INIT:_init};
   }();  
-
   FOG.KEY = function(){
     var _press = function(event){
       FOG.KEY.CHK(event.key.toLowerCase()); 
@@ -575,7 +575,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       // this function creates the Fog of War
       var _setfog=function (fogOn){
        if(fogOn!=false){   
-         FOG.SCREEN.SVG('rect',null,"fog");
+         FOG.SCREEN.SVG('rect',null,"fog",{"x":"-50%","y":"-50%"});
         };
         var oldLights = FOG.OPTS.GET("been");
        if(oldLights!=null &&oldLights.length>0){
@@ -697,8 +697,8 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
             var dx = parseInt(px.substring(0,px.length-2));
             var dy = parseInt(py.substring(0,py.length-2));
             var scale = FOG.OPTS.GET("scale"); var r = FOG.OPTS.GET("lradius")/2;
-              var cx=Math.floor((pt.x)/scale) + 2*(cR) - (r) +.5;
-              var cy=Math.floor((pt.y)/scale) + (cR - r)-1; 
+              var cx=Math.floor((pt.x)/scale) + 2*(cR) - (r) +1.5; 
+              var cy=Math.floor((pt.y)/scale) + (cR - r); 
           return {x:cx,y:cy};
         }
       return{OFFSET:_centeroffset,BEEN:_beenpush,SEEN:_seenpush,UNIQUE:_uniquepush,NEAR:_roundnearest,SVGNEAR:_svgnear};
@@ -733,7 +733,6 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
             FOG.CORE.DATA.SET("pos",cpos);
           }
         } else{FOG.ENTRY.POS();}
-        FOG.CORE.LOG("_svg init: setting CPOS",cpos);
         var facing = elem.getAttribute("fog-face");
         var face = "N";
         if (facing!=null){
@@ -802,9 +801,13 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
             var pt = {x:px+char.pos.x,y:py+char.pos.y}; 
             if (mode=="torch"){
               FOG.KEY.CHK("c");
-              FOG.SCREEN.CHAR.DROPTORCH(pt);
+              if (FOG.OPTS.CHAR[FOG.OPTS.GET("active")].torches>0){
+                FOG.SCREEN.CHAR.DROPTORCH(pt);
+              }              
             }
-            else{FOG.SCREEN.CHAR.CLICKED(pt);}
+            else if (!FOG.OPTS.GET("locked")){
+                FOG.SCREEN.CHAR.CLICKED(pt);                            
+            }
         }
         if (mode=="edit"){
           FOG.KEY.CHK(" ");
@@ -922,21 +925,32 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       var _clickmove=function(pt){   
           var cc = FOG.CORE.CHAR.AT(); var index=FOG.OPTS.CHAR.findIndex(i => i.name == cc.name);  
           var dist =Math.sqrt(Math.pow(pt.x- cc.pos.x,2) + Math.pow(pt.y-cc.pos.y,2));
-          var max = FOG.OPTS.GET("scale")*FOG.OPTS.GET("fogsize")/FOG.OPTS.GET("zoom")*5;                               // TO DO : distance reconcile
-          if (/*dist<=max */true){
+            var max = FOG.OPTS.GET("scale")*FOG.OPTS.GET("fogsize")/(FOG.OPTS.GET("zoom")*1.5);  
+          var _clickshort=function(){
+            if (FOG.OPTS.GET("locked")){  
+              setTimeout(function (){FOG.OPTS.SET("locked",false)},1000);
+            }          
+          }               
+          if (dist<=max && !FOG.OPTS.GET("locked")){            
+            FOG.OPTS.SET("locked",true);
             FOG.OPTS.SET("opos",cc.pos);
             FOG.SCREEN.CHAR.MOVE(cc.pos,pt); 
             FOG.SCREEN.GRID.BEEN(FOG.SCREEN.GRID.SVGNEAR(pt));
+            _clickshort();
           }          
           FOG.SCREEN.CHAR.MARCH(index);
         FOG.SCREEN.MAP.LIGHTS();
-        FOG.SCREEN.MAP.FIND(); 
+        FOG.SCREEN.MAP.FIND();
+        
       };
       var _resetallmoves=function(){
           for (var c=0;c<FOG.OPTS.CHAR.length;c++){
             var cc=FOG.OPTS.CHAR[c];
-            cc.moves=FOG.OPTS.GET("moves");  
-            if(cc.timer && cc.timer<=FOG.OPTS.GET("time")){cc.lights=[];}
+            cc.moves=FOG.OPTS.GET("moves");
+            if (cc.timer && cc.timer>0){
+              cc.timer--;  FOG.OPTS.CHAR[c].timer=cc.timer;
+              if(cc.timer && cc.timer<=FOG.OPTS.GET("time")){cc.lights=[];}  //change img.src to unlit torch
+            }  
           }          
         FOG.OPTS.SET("active",0);
       };
@@ -944,10 +958,14 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         var torch = {name:"torch",
           pos:pos,
           lights:[FOG.SCREEN.CHAR.TORCH()],
-          square:20,timer:5+FOG.OPTS.GET("time"),
-          src:"https://vignette.wikia.nocookie.net/darksouls/images/c/c6/Torch_%28DSIII%29.png/revision/latest?cb=20160729181452"
+          square:20,timer:FOG.OPTS.GET("torchtime")+FOG.OPTS.GET("time"),
+          src:FOG.OPTS.GET("torch")
         };
         FOG.OPTS.CHAR.push(torch);
+        // Find the active character, decrement their torches
+        ;
+        FOG.OPTS.CHAR[FOG.OPTS.GET("active")].torches--;
+
         FOG.SCREEN.FULL(FOG.CORE.CHAR.PLACE(FOG.OPTS.CHAR.length-1),map);
         FOG.SCREEN.MAP.LIGHTS();
         FOG.SCREEN.MAP.FIND();
@@ -1075,18 +1093,16 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
     };
     return {SVG:_svg,POS:_pos,CHAR:_char,OPTS:_opts,CONFIG:_config};
   }();
+  FOG.TEST = function(){
+    var _all = function(){
+        //FOG.OPTS.SET("test",true);
+        //FOG.CORE.LOG("Starting tests...");
+      
+        //FOG.CORE.LOG("Ending tests...");
+        //FOG.OPTS.SET("test",false);
+    }
+    return{ALL:_all};
+  }();
   FOG.INIT = function(){
     window[ addEventListener ? 'addEventListener' : 'attachEvent' ]( addEventListener ? 'load' : 'onload', FOG.CORE.INIT );
   }();
-
-
-  /*
-    TO DO's, 5/6: 
-
-      Cleanup - 
-
-      Check-in
-
-      ENTRY methods
-        Regions add-in
-  */
