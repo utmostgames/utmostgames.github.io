@@ -373,7 +373,8 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       FOG.OPTS.SET("walkables", 'path,line,polyline,image');
       FOG.OPTS.SET("welcometitle","Welcome to FOG-Crawl!");
       FOG.OPTS.SET("welcometext", "<p>FOG-CRAWL is a map presentation tool for RPG Game Masters that keeps you in control. Pick any image to start mapping it!</p><p>Suggestions? Contributions?</p><p><a href='https://www.patreon.com/utmostgames'>Patreon</a></p><p><a href='https://twitter.com/utmost_games'>Twitter</a></p><p><a href='https://github.com/utmostgames/fog-crawl'>Github</a></p>");
-      
+      FOG.OPTS.SET("disclaimer","Whoops! It looks like your screen is too small to enjoy all the features of FOG-Crawl!  Please come back on a device over 900 pixels wide! We also recommend a mouse and keyboard to use all the features of FOG-Crawl.");
+
       FOG.OPTS.SET("debug",true);
       FOG.CORE.DATA.USEROPTS();
     }
@@ -1286,7 +1287,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         }
         var _newcampaignui = function(){
           FOG.ENTRY.NONEW();
-          var isNew=""; if (localStorage=={}){isNew=" new";}
+          var isNew=""; if (localStorage.length<1){isNew=" new";}
           newdiv = FOG.SCREEN.HTML("div","newdiv",document.getElementById("screen"),"splash"+isNew);
           //add "return" class to newdiv if return visitor
           var welcome = FOG.SCREEN.HTML("div","welcome",newdiv,"welcome");
@@ -1296,9 +1297,27 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           var wtitle = FOG.SCREEN.HTML("h1",null,wmiddle,"title"); wtitle.innerText=FOG.OPTS.GET("welcometitle");
           var wtext = FOG.SCREEN.HTML("div",null,wmiddle,"text"); wtext.innerHTML=FOG.OPTS.GET("welcometext");
           var mbed='<iframe src="https://www.youtube.com/embed/7karfJbCTkc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-          wleft.innerHTML=mbed;         
+          wleft.innerHTML=mbed;        
+          var wdisclaimer = FOG.SCREEN.HTML("div","wbottom",welcome,"disclaimer");
+          wdisclaimer.innerText=FOG.OPTS.GET("disclaimer")
           FOG.SCREEN.HTML("p","space",newdiv,"clear");
 
+          var datadiv = FOG.SCREEN.HTML("div","datadiv",newdiv,"wide");
+          var deletebtn = FOG.SCREEN.HTML("div","delete",datadiv,"ui light red");
+          deletebtn.onclick=function(){
+            FOG.CORE.DATA.CLEAR();FOG.ENTRY.NEWUI();
+          };
+          deletebtn.innerHTML="<span class='dot'></span>Delete All (no undo!)";
+          var importbtn = FOG.SCREEN.HTML("div","import",datadiv,"ui");
+          importbtn.onclick=function(){
+            FOG.ENTRY.FULL("import");
+          };
+          importbtn.innerHTML="<span class='dot'></span>Import Data";
+          var exportbtn = FOG.SCREEN.HTML("div","export",datadiv,"ui");
+          exportbtn.onclick=function(){
+            FOG.ENTRY.FULL("export");
+          };
+          exportbtn.innerHTML="<span class='dot'></span>Export Data";
 
           var exportavailable=false;
           var detect = (FOG.CORE.DATA.GET("svgpath")!=null && FOG.CORE.DATA.GET("pos")!=null) ? " green" : "";
@@ -1340,22 +1359,6 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           }
           crawlbtn.innerHTML="<span class='dot'></span>Crawl!";
           
-          var datadiv = FOG.SCREEN.HTML("div","datadiv",newdiv,"wide");
-          var deletebtn = FOG.SCREEN.HTML("div","delete",datadiv,"ui light red");
-          deletebtn.onclick=function(){
-            FOG.CORE.DATA.CLEAR();FOG.ENTRY.NEWUI();
-          };
-          deletebtn.innerHTML="<span class='dot'></span>Delete All (no undo!)";
-          var exportbtn = FOG.SCREEN.HTML("div","export",datadiv,"ui");
-          exportbtn.onclick=function(){
-            FOG.ENTRY.FULL("export");
-          };
-          exportbtn.innerHTML="<span class='dot'></span>Export Data";
-          var importbtn = FOG.SCREEN.HTML("div","import",datadiv,"ui");
-          importbtn.onclick=function(){
-            FOG.ENTRY.FULL("import");
-          };
-          importbtn.innerHTML="<span class='dot'></span>Import Data";
         }
         var _configui = function(){
           console.log("UI Configuration start (empty)");

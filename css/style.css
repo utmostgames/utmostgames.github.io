@@ -55,7 +55,7 @@ body{background-color:#000c;overflow:hidden;}
 #center > svg > image,#center.region-menu.region-add > svg > image {cursor:crosshair;width:100000px;height:100000px;pointer-events: all;}
 #center > svg > rect {fill:#0f05;}
 
-.splash > #datadiv {width:40%;height:42%;float:right;margin-top: -25%;}
+.splash > #datadiv {float:right;}
 #datadiv .ui {margin:10px;height: max-content;padding-left: 20%;  padding-bottom: 4%;}
 #datadiv .dot{background-color: unset;}
 
@@ -89,12 +89,12 @@ body{background-color:#000c;overflow:hidden;}
   margin-bottom: 0;
 }
 #newdiv.new > .welcome, #newdiv > .welcome:hover  {
-  padding-bottom: 30%;
+  height: 25em;
 }
 .new .welcome iframe, .new .welcome .text,.welcome:hover iframe, .welcome:hover .text{display:inline-block;}
 .welcome a,.welcome a:visited {color:white}.welcome a:hover {color:blue}
 .welcome > div {float:left;width:32%;margin-left: 10px;}
-.welcome > .middle{width:50%;} .welcome img{width:100%;}
+.welcome > .middle{width:50%;} 
 .ui.light.red, .ui.light.yellow, .ui.light.disabled {background-color:gray;}
 .ui.light.green, .ui.light.go {background-color:rgb(41, 216, 108);}
 .dot {
@@ -177,3 +177,21 @@ align-items: center; }
 .region:not(:first-child){margin:15px -170px 5px -170px;}
 .region .monster, .region #monster{margin-top:-100%;}
 /*.region:not(:first-child) .etxt{margin:15px -170px 5px -170px;}*/
+
+.disclaimer{padding:15px;color:pink;width: 90%;
+    background: #f00a;}
+.welcome > .disclaimer{display:none;}
+@media only screen and (max-width: 900px) {
+  #screen #newdiv{
+    top:5%; left:5%; width:90%;
+  }
+  #screen #newdiv > div {display:none;}
+  #screen #newdiv > .warning{display:block;}
+  #screen #newdiv > div#welcome {display:block;}
+  .welcome > div {width:95%;}
+  .welcome > .middle{width:90%;} 
+  #newdiv.new > .welcome, #newdiv > .welcome:hover  {
+    height:95em;    
+  }
+  .welcome > .disclaimer {display: block;}
+}
