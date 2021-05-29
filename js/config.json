@@ -1,12 +1,10 @@
 {
     "svg":[
-        {"path":"currMap.svg","pos":{"x":100,"y":300},"face":"S"},
-        {"path":"nextMap.svg","pos":{"x":300,"y":-300}}
-    ],
-    "core":{    
-        "opts":[
-
-        ],
-        "char":"/js/char.json"
-    }
+        {"path":"/img/hcourt_n.svg"},
+        {"path":"https://svgur.com/i/XEN.svg"},
+        {"path":"/img/maze.svg","start":"731,513"}
+    ], 
+    "opts":[],
+    "charpath":"/js/char.json",
+    "face":"S"
 }

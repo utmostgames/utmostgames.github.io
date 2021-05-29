@@ -6,36 +6,148 @@ body{background-color:#000c;overflow:hidden;}
 #screen{clip-path: inset(5px 5px); height:100vh; background-color:#412b15;}
 .map {
   transition: top 2s ease 0s,left 2s ease 0s;}
-.map svg{
-  overflow:visible;
+.map svg, .map svg *{
+  overflow:visible;transform-origin: top left;
 }
+.map svg image {width: 100%;
+  height: 100%;}
 #screen img{ margin-top: -20px;margin-left: -20px;}
-.map{width:100%;height:100%;position:relative;padding:0 0 0 0;}
-#map > svg, #map > img, #map > div {margin-top:25%;margin-left:50%;} 
+.ui{
+  width: 25%;
+  height: 25%;
+  margin-top: -45%;
+  margin-left: 40%;
+  position: relative;
+  padding: 2%;
+      padding-top: 2%;
+      padding-right: 2%;
+      padding-bottom: 2%;
+      padding-left: 2%;
+  background-color: cadetblue;
+  cursor:pointer;
+}
+#screen .ui.biginput{ height:30%;}
+.ui + .ui.biginput{margin-top: -8%;}
+#screen .splash{
+  width: 60%;background: rgb(255, 181, 92);position: absolute; top: 20%;left: 20%;
+  transition: top 2s ease 0s;
+}
+#screen .start #cbox{margin-top: 50vh;}
+.splash > div {float: left;
+  background: palegreen; position: relative;
+  height: 80%;
+  margin: 20px;
+  padding: 10px;
+  width: 50px;
+  max-width: 10%;}
+#screen .splash > .instr {
+  width: 100px;
+  margin-left: -125px; background-color: steelblue;
+  height: unset;}
+#startdiv .ui {height: auto;
+  width: 30%;}
+#center.start {margin-top:-50vh;padding-bottom: 70vh;}
+#center > svg, #center > object {overflow: visible;position: relative; 
+  transform-origin:0% 0%;      border-left: thin black dashed; 
+   border-top: thin black dashed; margin-right:-100%;
+}
+#center.start > svg{margin-left: -50vw;  margin-top: -15vh;}
+#center > svg > image,#center.region-menu.region-add > svg > image {cursor:crosshair;width:100000px;height:100000px;pointer-events: all;}
+#center > svg > rect {fill:#0f05;}
+
+.splash > #datadiv {width:40%;height:42%;float:right;margin-top: -25%;}
+#datadiv .ui {margin:10px;height: max-content;padding-left: 20%;  padding-bottom: 4%;}
+#datadiv .dot{background-color: unset;}
+
+.txtarea{margin:10px;}
+#addr,#canr,.txtarea,.region-add #newr,.region-add #contbtn, .region-add .zoom{display:none;}
+.region-add #addr,.region-add #canr,.region-add .txtarea{display:inline-flex;}
+#center.region-menu > svg > image {cursor:progress;}
+
+#center > svg > circle, #center > svg > polygon {fill:url(#radiusColorGrad);}
+#center .zoom {padding:5px; background-color: thistle;margin-bottom: 10px;
+  width: 25%;cursor: pointer;}
+
+.btn{
+  padding:10px; margin-left:-15px;margin-right: -15px; margin-top:15px;margin-bottom: 10px;cursor: pointer;background-color: lightskyblue;
+}
+#newdiv > div {width:30%;height:unset;padding-left:100px;margin-bottom:5%;float: none; max-width: unset;  padding-top: unset;
+}
+.welcome iframe, .welcome .text{display:none;}
+.welcome iframe {width: 100%;
+  height: 350px;}
+#newdiv .ui {
+  border:outset;
+  border-radius: 20%;
+}
+#newdiv > .welcome {
+   width:100%;margin-top:-5%;margin-left:-2%;color:white;background-color: black;    
+  height: .5em;
+  padding: 2%;
+  padding-top: 1px;
+  padding-bottom: 6%;
+  margin-bottom: 0;
+}
+#newdiv.new > .welcome, #newdiv > .welcome:hover  {
+  padding-bottom: 30%;
+}
+.new .welcome iframe, .new .welcome .text,.welcome:hover iframe, .welcome:hover .text{display:inline-block;}
+.welcome a,.welcome a:visited {color:white}.welcome a:hover {color:blue}
+.welcome > div {float:left;width:32%;margin-left: 10px;}
+.welcome > .middle{width:50%;} .welcome img{width:100%;}
+.ui.light.red, .ui.light.yellow, .ui.light.disabled {background-color:gray;}
+.ui.light.green, .ui.light.go {background-color:rgb(41, 216, 108);}
+.dot {
+  height: 20px;
+  width: 20px;
+  background-color: gray;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: -80px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+.red .dot {
+  background-color: rgb(255, 0, 0);}
+.yellow .dot {
+  background-color:yellow;}
+.green .dot, .go .dot {
+    background-color:green;}
+#delete{background-color: rgb(180, 43, 43);}
+
+.map{width:100%;height:100%;position:relative;padding:0 0 0 0;cursor:help;}
+#map > svg, #map > object, #map > img, #map > div {margin-top:25%;margin-left:50%;} 
 #map > img{
   margin-top:22%;
-  position:absolute;pointer-events: none; 
+  position:absolute;pointer-events:none; 
   transform-origin:50% 50%;
   transform:rotate(0deg);
   transition: top 2s ease 0s,left 2s ease 0s;
 }
-svg > path#mappath{
-       mask: url(#mask);
-  }
+#map {
+  transition: top 2s ease 0s,left 2s ease 0s;
+}
+#map svg, #map object {width:15000px; height:15000px}
+svg > path, svg > line, svg > polyline, svg > image{
+       mask: url(#mask); 
+}
 
 svg > * {
     pointer-events:none;
 }
-svg > path {pointer-events:all;}
+.char svg > path, .char svg > line, .char svg > polyline, .char svg > image {pointer-events:all;cursor: pointer;} 
+.lock svg > path, .lock svg > line, .lock svg > polyline, .lock svg > image {cursor:wait;}
 
-.fog {fill:#000; pointer-events: none; width:500%;height:500%;}
-svg mask .seen{fill:url(#litColorGrad)} 
+.fog {fill:#000; pointer-events:none; width:500%;height:500%;}
+svg mask .been,svg mask .lit{fill:#111;}
+svg mask .seen, svg mask .seen{fill:#fff1;} 
 svg mask .seen.infra{fill:#f004; fill:url(#infraGrad);}
-svg mask .been, svg mask .been.seen, svg mask .been.seen.infra{fill:#111;}
 
-svg > circle.lit, svg > circle.seen {fill:#fff4; fill:url(#litColorGrad);}
+svg > circle.lit, svg > polygon.lit, svg > circle.seen {fill:#fff4; fill:url(#litColorGrad);}
 svg > circle.infra, svg > circle.infra.seen {fill:#f004; fill:url(#infraColorGrad);}
 
+/*  */
 #fog { position:absolute;top:0px; width:100%;height:100%;pointer-events: none;
 }
 #fog div{
@@ -49,7 +161,12 @@ svg > circle.infra, svg > circle.infra.seen {fill:#f004; fill:url(#infraColorGra
 
 .output{position:absolute; left: 80%; top:0px; width:200px; background-color:#fffc;padding:5px;}
 .preload{display:none;}
+.lock{cursor:wait;}
 .info{background:#fff1;width: 300px;height: 400px;left: 10px;top: 10px;position: absolute;}
+#center > svg > rect.region{fill: rgba(25, 25, 112, 0.5);}
+#center > svg > rect#new-region {fill: rgba(255, 99, 71, 0.5);}
+
+.clear{clear:both;}
 
 .regions{position:fixed;left:0px;top:0px; height:100%;display: flex;
 align-items: center; }

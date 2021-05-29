@@ -14,7 +14,35 @@
     "special":["infra"]
   },
   {
-    "name":"Faison",
+    "name":"Faison1",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
+    "picOri":"S", 
+    "square":20,
+    "special":[]
+  },
+  {
+    "name":"Faison2",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
+    "picOri":"S", 
+    "square":20,
+    "special":[]
+  },
+  {
+    "name":"Faison3",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
+    "picOri":"S", 
+    "square":20,
+    "special":[]
+  },
+  {
+    "name":"Faison4",
+    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
+    "picOri":"S", 
+    "square":20,
+    "special":[]
+  },
+  {
+    "name":"Faison5",
     "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
     "picOri":"S", 
     "square":20,
