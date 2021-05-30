@@ -42,7 +42,7 @@ body{background-color:#000c;overflow:hidden;}
   max-width: 10%;}
 #screen .splash > .instr {
   width: 100px;
-  margin-left: -125px; background-color: steelblue;
+  margin-left: -125px; background-color: rgb(133, 75, 130);
   height: unset;}
 #startdiv .ui {height: auto;
   width: 30%;}
@@ -53,6 +53,7 @@ body{background-color:#000c;overflow:hidden;}
 }
 #center.start > svg{margin-left: -50vw;  margin-top: -15vh;}
 #center > svg > image,#center.region-menu.region-add > svg > image {cursor:crosshair;width:100000px;height:100000px;pointer-events: all;}
+#center > svg.notsvg > image,#center.region-menu.region-add > svg.notsvg > image {width:unset;height:80vh;}
 #center > svg > rect {fill:#0f05;}
 
 .splash > #datadiv {float:right;}
@@ -129,6 +130,7 @@ body{background-color:#000c;overflow:hidden;}
   transition: top 2s ease 0s,left 2s ease 0s;
 }
 #map svg, #map object {width:15000px; height:15000px}
+svg.notsvg > image {width:unset;height:80vh;}
 svg > path, svg > line, svg > polyline, svg > image{
        mask: url(#mask); 
 }
@@ -140,11 +142,11 @@ svg > * {
 .lock svg > path, .lock svg > line, .lock svg > polyline, .lock svg > image {cursor:wait;}
 
 .fog {fill:#000; pointer-events:none; width:500%;height:500%;}
-svg mask .been,svg mask .lit{fill:#111;}
-svg mask .seen, svg mask .seen{fill:#fff1;} 
+svg mask .been,svg mask .lit{fill:#1111;}
+svg mask .seen, svg mask .seen{fill:#fff1;fill:url(#litGrad);} 
 svg mask .seen.infra{fill:#f004; fill:url(#infraGrad);}
 
-svg > circle.lit, svg > polygon.lit, svg > circle.seen {fill:#fff4; fill:url(#litColorGrad);}
+svg > circle.lit, svg > polygon.lit, svg > circle.seen {fill:#ffffff01; fill:url(#litColorGrad);}
 svg > circle.infra, svg > circle.infra.seen {fill:#f004; fill:url(#infraColorGrad);}
 
 /*  */

@@ -9,7 +9,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       var _get=function(key){
         var getval = FOG.OPTS.LIST.find(x => x.key == key);
         try{return getval.val;} catch(ex){
-          console.log("unassigned VAL,",key);
+          console.log("unassigned value,",key);
           return null;
         }
       };
@@ -34,6 +34,10 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           xhr.open('GET', url);
           xhr.send();
         });
+      }
+      var _issvg=function(path){
+        path = path || FOG.CORE.DATA.GET("svgpath");
+        if (path!=null&&path.length!=null&&path.length>5&&path.indexOf(".svg")==path.length-4){return true;}else return false;
       }
       var _ajax = function (url){
         return new Promise(function(resolve, reject) {
@@ -176,8 +180,24 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           }
         }
       }
+      var _iterate = function (index, len, up){
+        var march=FOG.OPTS.GET("march"); 
+        if (up){
+          if (index>=len){return 0;}
+          else if (FOG.OPTS.CHAR[index].name.indexOf("torch")==0 || (FOG.OPTS.CHAR[index].moves<=0&&!march)){
+            return _iterate(index+1,len,up);
+          }
+          else return index+1;
+        }else {
+          if (index==0){return len-1;}
+          else if (FOG.OPTS.CHAR[index].name.indexOf("torch")==0 || (FOG.OPTS.CHAR[index].moves<=0&&!march)){
+            return _iterate(index-1,len,up);
+          }
+          else return index-1;
+        }
+      }
       return{SVG:_svgload,JSONCHAR:_charjsonload,JSONCONFIG:_configjsonload,FILE:_fileselect,AJAX:_ajax,AJAXX:_ajaxx,CALL:_ajaxcall,CALLX:_ajaxXMLcall,
-        SET:_store,GET:_retrieve,DEL:_delete,CLEAR:_clear,ZERO:_zero,START:_start,TIMESTAMP:_timestamp,
+        SET:_store,GET:_retrieve,DEL:_delete,CLEAR:_clear,ZERO:_zero,START:_start,TIMESTAMP:_timestamp,ISSVG:_issvg,ITERATE:_iterate,
         LAP:_lap,NOW:_time,DEBUG:_toggleDebug,DEDUPE:_dedupe,XDUPE:_xdupe,XDS:_xdupself,EXSAVE:_exsave,IMSAVE:_imsave,USEROPTS:_getuseroptions}
     }();
     var _char = function(){
@@ -269,7 +289,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           }
           var img = document.createElement('img');
           img.classList+="char";
-          img.width= img.height= cc.square*2;
+          img.width= img.height= (cc.square||FOG.OPTS.GET("square"))*2;
           img.style.left= cc.pos.x+"px";
           img.style.top= cc.pos.y+"px";
           img.pos={x:cc.pos.x,y:cc.pos.y};
@@ -348,7 +368,8 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       FOG.OPTS.SET("scale",.999);
       FOG.OPTS.SET("zoom",1);
       FOG.OPTS.SET("fogsize",15);
-      FOG.OPTS.SET("lradius",10); 
+      FOG.OPTS.SET("lradius",8); 
+      FOG.OPTS.SET("square",20); 
       FOG.OPTS.SET("zoomstep",1);
       FOG.OPTS.SET("cpos",{});   // this is the Centerpos searched for by FOG.SCREEN.MAP.FIND 
       FOG.OPTS.SET("been",FOG.CORE.DATA.GET("been")||[]);
@@ -356,6 +377,9 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       FOG.OPTS.SET("torch","https://vignette.wikia.nocookie.net/darksouls/images/c/c6/Torch_%28DSIII%29.png/revision/latest?cb=20160729181452");
       FOG.OPTS.SET("outtorch",'https://i.ibb.co/cTTzQXR/Torch-DSIII.webp');
       FOG.OPTS.SET("arrow","https://lh3.googleusercontent.com/fife/ABSRlIpqqBTVbtXByghtbIm0DcnMFKuSfZtGGPMHk-r8ilS9DE-sA4kU-LKV340y7-AL5AUB84AaVxU7jK9WlQgvy6K59xb9vyrcSsShOyZA6dzqGtkc7c71qvtdMFUzvC24CG-QeSsF9FXSBXlEJlbNLxZnLLQmpBpGDH8EVjLn1BZqhv6hnQOz1tlJMzqUePhE1BVP_Vda4YgA2SW_CqXikKsTaqjE-hV1vaC55Eh9iFoflj3uIR1hQOja9JHFjLeRxO_wmCbommcQ2m1XeO7btqm8OF6b2RBr9g_t-F1iIuPhXMjryBEHVbLjn1frPiaMMIFgDHRuw32oS1lX2weuGKxJU7OYkiMHsoRJPaXKEMkit0ZPBD_2cZq46GEcG2lw_rn-bBW8P5zwAdxxI_3pkXODgWJBQbbt91fLQQtbPiqEyx91k-MHoX5cn4-vOdRwCcS1tB568RuXWTmgQtuyaRHREfCidxmYoltxEPmwGWB54E_M8tnEvvLOQ-Ocv3P_lG9EGnX5rsTMqExWaTkDcmcuQ6T3jrH2grDGJxs44_zXgXB1l96Bkyk20O6n2CQjlxVfO9SeUaih_s9qC-OA8dQ8xkyxkX5E6ftX6hVDtrdFcTZRm6_mV1F6h35BEEZcqynx_j6XlJ7GUAHcdoJJr7x-iHnoECWCdcqLuF8rxHtLz1GTDiyAouxDaCFSj1QETdrvC8PxG2_vvPDeBFShlvIlPoDHMDcgSw=w3840-h1932-ft");//,"https://image.flaticon.com/icons/png/128/892/892692.png"
+      FOG.OPTS.SET("dysons","https://rpgcharacters.files.wordpress.com/2020/01/mentzer-dungeon.png");
+      FOG.OPTS.SET("tunnel01","https://fredhawk.neocities.org/i/fog/tunnel2.jpg")
+      FOG.OPTS.SET("autoconfigpath","/js/config.json");
       FOG.OPTS.SET("torchtime",10);
       FOG.OPTS.SET("instr","v: map mode<br/><br/>c: character mode<br/><br/>SPACE: escape");
       FOG.OPTS.SET("charmode","click: step <br/>b/n: prev/next char<br/>&lt; - &gt;: rotate<br/>i: char info<br/><br/>SPACE: escape");
@@ -367,10 +391,10 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       FOG.OPTS.SET("moves",2); // time tracker minimum
       FOG.OPTS.SET("time",0); // time tracker, in minutes
       FOG.OPTS.SET("march",true);
+      FOG.OPTS.SET("spows",[]); // indices of chars with active specials to check onLights
       FOG.OPTS.SET("beamoff",true);
       FOG.OPTS.SET("locked",false);
-      // should be a better solution for stray tags like line & polylines :-(
-      FOG.OPTS.SET("walkables", 'path,line,polyline,image');
+      FOG.OPTS.SET("walkables", 'path,line,polyline,image');      // should be a better solution for stray tags like line & polylines :-(
       FOG.OPTS.SET("welcometitle","Welcome to FOG-Crawl!");
       FOG.OPTS.SET("welcometext", "<p>FOG-CRAWL is a map presentation tool for RPG Game Masters that keeps you in control. Pick any image to start mapping it!</p><p>Suggestions? Contributions?</p><p><a href='https://www.patreon.com/utmostgames'>Patreon</a></p><p><a href='https://twitter.com/utmost_games'>Twitter</a></p><p><a href='https://github.com/utmostgames/fog-crawl'>Github</a></p>");
       FOG.OPTS.SET("disclaimer","Whoops! It looks like your screen is too small to enjoy all the features of FOG-Crawl!  Please come back on a device over 900 pixels wide! We also recommend a mouse and keyboard to use all the features of FOG-Crawl.");
@@ -389,7 +413,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       FOG.SCREEN.XCSS("preload","currMap");          
       window.addEventListener("keydown", FOG.KEY.PRESS);
       window.addEventListener("resize", FOG.SCREEN.MAP.RESIZE);
-      FOG.CORE.LOG("FOG: Finished loading.", FOG.CORE.DATA.NOW()-FOG.CORE.DATA.ZERO + "ms");
+      FOG.CORE.LOG("FOG: Finished loading.", (FOG.CORE.DATA.NOW()-FOG.CORE.DATA.ZERO)/1000 + "sec");
       FOG.TEST.ALL();
     }
     var _jlog=function(chardata){
@@ -465,66 +489,39 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         FOG.OPTS.SET("cpos",npos);
         FOG.SCREEN.MAP.FIND("panning");  
       }
+      //this function is largely automated, handling iterating thru the Characters index based on certain factors
       function CheckActiveChar(key){
         var testIndex=FOG.OPTS.GET("active"), up=null; 
-        function _loopList(dir){
-          if (!dir){testIndex++;}
-          else if (dir){testIndex--;}
-          if (testIndex>=FOG.OPTS.CHAR.length){testIndex=0;}
-          else if (testIndex<0){testIndex=FOG.OPTS.CHAR.length-1;}
+        function _loopList(dir,ind){
+          var ready = false;
+          if (!dir){ind++;}
+          else if (dir){ind--;}
+          if (ind>=FOG.OPTS.CHAR.length){ind=0;}
+          else if (ind<0){ind=FOG.OPTS.CHAR.length-1;}
+          if (FOG.OPTS.CHAR[ind].name=="torch"){
+            console.log("found torch");
+            _loopList(dir,ind);
+          }else {ready=true;
+            FOG.OPTS.SET("active",ind);
+          }
         }
-        if (key=="n"){up=false;_loopList(up);}
-        if (key=="b"){up=true;_loopList(up);}
-        //skip Torches
-        var march=FOG.OPTS.GET("march")
-        while (FOG.OPTS.CHAR[testIndex].name.indexOf("torch")==0 || (!march && FOG.OPTS.CHAR[testIndex].moves<=0)){
-          _loopList(up);
+        if (key=="n"){up=false;_loopList(up,testIndex);}
+        if (key=="b"){up=true;_loopList(up,testIndex);}
+        testIndex = FOG.OPTS.GET("active");
+        var march=FOG.OPTS.GET("march"); 
+        //if on free-move,        //    and you're out of moves,        //      until zero twice,        //  goto next
+        var hitZero=false;var twice=false;
+        while (!march && FOG.OPTS.CHAR[testIndex].moves<=0 && !hitZero){
+          _loopList(up,testIndex);
+          testIndex = FOG.OPTS.GET("active");
+          if (twice){if (testIndex==0){hitZero=true;}}
+          if (testIndex==0){twice=true;}
         }
-        FOG.OPTS.SET("active",testIndex);
         var chr = FOG.OPTS.CHAR[FOG.OPTS.GET("active")];
         FOG.OPTS.SET("cpos",chr.pos); var spc=""; if (chr.special&&chr.special.name!="infra"){spc="* "+chr.special.name;}
-        FOG.SCREEN.OUT("Char: <br/>"+chr.name+"<br/><br/>"+FOG.OPTS.GET("charmode"));
-        if(FOG.OPTS.GET("active")==testIndex)
-        {FOG.SCREEN.MAP.FIND("checked active character");}
-      }
-      function CheckStep(key){ 
-        function _steppoint(key){
-          var cclick = FOG.SCREEN.GRID.OFFSET(newpos);
-          var pclick = {x:cclick.x-newpos.x,y:cclick.y-newpos.y};
-          FOG.CORE.LOG(cclick,pclick);
-          if(FOG.SCREEN.MAP.HIT(newpos)){
-            FOG.SCREEN.CHAR.MOVE(oldpos,newpos);
-            return true;
-          }
-          return false;
-        }
-        var step = FOG.OPTS.GET("speed"), 
-          times = 1,
-          oldpos = FOG.OPTS.CHAR[FOG.OPTS.GET("active")].pos, 
-          newpos = {x:oldpos.x,y:oldpos.y};
-        if (key=="i"||key=="j"||key=="k"||key=="m"){times=4;}
-        for (var n=0;n<times;n++){
-          var cont=true;
-          if (key=="arrowleft"||key=="j"){ 
-            newpos.x-=step; 
-          }
-          if (key=="arrowright"||key=="k"){
-            newpos.x+=step;
-          }
-          if (key=="arrowup"||key=="i"){ 
-            newpos.y-=step;
-          }
-          if (key=="arrowdown"||key=="m"){ 
-            newpos.y+=step; 
-          }
-          
-          if(oldpos.x!=newpos.x || oldpos.y!=newpos.y){
-            cont = _steppoint(key); 
-            FOG.CORE.LOG(["Checkstep "+n,newpos,oldpos,FOG.SCREEN.GRID.OFFSET(newpos)]);
-          }
-          if (!cont){break;}
-        }
-        
+        FOG.SCREEN.OUT("Char: <br/>"+chr.name+"<br/>");
+        FOG.SCREEN.MAP.FIND();  
+        if (hitZero){FOG.SCREEN.MAP.NEWTURN();}
       } 
       function CheckMarch(key){
         
@@ -566,11 +563,13 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           }
           return rface;
         }
-        var currfacing = FOG.OPTS.CHAR[FOG.OPTS.GET("active")].orient;
-        FOG.OPTS.CHAR[FOG.OPTS.GET("active")].orient = rFromTo(currfacing,dir);
+        var cc = FOG.OPTS.CHAR[FOG.OPTS.GET("active")];
+        var newfacing = rFromTo(cc.orient,dir);
+        FOG.OPTS.CHAR[FOG.OPTS.GET("active")].orient = newfacing; cc.orient=newfacing;
+        FOG.CORE.DATA.SET(cc.name,cc);
         amt=amt||90;
         
-        var img = document.getElementById(FOG.OPTS.CHAR[FOG.OPTS.GET("active")].id);
+        var img = document.getElementById(cc.id);
         var angleArr = img.style.transform||0;
          if(angleArr!=0){
            angleArr = angleArr.split("(")[1].replace("deg)","")
@@ -707,6 +706,10 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
     var _fog = function(){
       // this function creates the Fog of War
       var _setfog=function (fogOn){
+        var scale = FOG.OPTS.GET("scale"); var r = FOG.OPTS.GET("lradius");
+        // so it's 'about right at large scales, but at small it needs a big boost
+        // so, 100 / scale * r ??
+        r*=(50/scale); FOG.OPTS.SET("lradius",r);
        if(fogOn!=false){   
          FOG.SCREEN.SVG('rect',null,"fog",{"x":"-50%","y":"-50%"},"currMap");
         };
@@ -714,7 +717,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
        if(oldLights!=null &&oldLights.length>0){
           //build oldlights
           for (i=0;i<oldLights.length;i++){
-            FOG.SCREEN.SVG('circle',null," been",{"r":FOG.OPTS.GET("lradius"),"cx":oldLights[i].x,"cy":oldLights[i].y},"mask");
+            FOG.SCREEN.SVG('circle',null," been",{"r":r,"cx":oldLights[i].x,"cy":oldLights[i].y},"mask");
           }  
        }
       }      
@@ -845,7 +848,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       var _svgnear = function (pt){
             var dMap = document.getElementById("map"); 
             var px = dMap.style.left; var py = dMap.style.top;
-            var scale = FOG.OPTS.GET("scale"); var r = FOG.OPTS.GET("lradius")/2;
+            var scale = FOG.OPTS.GET("scale"); 
               var cx=Math.floor((pt.x)/scale);
               var cy=Math.floor((pt.y)/scale);
           return {x:cx,y:cy};
@@ -857,7 +860,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         var elem = document.getElementById("currMap");
         var start=FOG.OPTS.GET("start");
         var scale=FOG.CORE.DATA.GET("scale")||1;
-          FOG.OPTS.SET("scale",scale); console.log("SVG init Scale:",scale);
+          FOG.OPTS.SET("scale",scale);
           var css = "svg{transform:scale("+scale+")";
           FOG.SCREEN.CSS(css);
           var userCSS=FOG.OPTS.GET("CSS");
@@ -890,10 +893,15 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           FOG.SCREEN.SVG("defs","defs",'',null,"currMap"); 
           FOG.SCREEN.SVG("mask","mask",null,null,"defs"); 
 
+          FOG.SCREEN.SVG("radialGradient","litGrad",null,null,"defs");
+          FOG.SCREEN.SVG("stop",null,null,{"offset":0,"stop-color":"white","stop-opacity":1},"litGrad"); 
+          FOG.SCREEN.SVG("stop",null,null,{"offset":.25,"stop-color":"white","stop-opacity":.4},"litGrad");
+          FOG.SCREEN.SVG("stop",null,null,{"offset":1,"stop-color":"white","stop-opacity":0},"litGrad");
+
           FOG.SCREEN.SVG("radialGradient","litColorGrad",null,null,"defs");
-          FOG.SCREEN.SVG("stop",null,null,{"offset":0,"stop-color":"white","stop-opacity":.5},"litColorGrad"); 
-          FOG.SCREEN.SVG("stop",null,null,{"offset":.5,"stop-color":"white","stop-opacity":.05},"litColorGrad");
-          FOG.SCREEN.SVG("stop",null,null,{"offset":1,"stop-color":"white","stop-opacity":0},"litColorGrad");
+          FOG.SCREEN.SVG("stop",null,null,{"offset":.5,"stop-opacity":0},"litColorGrad");
+          FOG.SCREEN.SVG("stop",null,null,{"offset":.8,"stop-color":"black","stop-opacity":.4},"litColorGrad"); 
+          FOG.SCREEN.SVG("stop",null,null,{"offset":1,"stop-color":"black","stop-opacity":0},"litColorGrad");
           
           FOG.SCREEN.SVG("radialGradient","infraGrad",null,null,"defs");
           FOG.SCREEN.SVG("stop",null,null,{"offset":0,"stop-color":"red","stop-opacity":1},"infraGrad"); 
@@ -908,10 +916,11 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         _initMask();
       };
       var _svgImageInit=function(){
-        FOG.SCREEN.SVG("svg","currMap","preload",null,"map");
+        var issvg = FOG.CORE.DATA.ISSVG(); var notsvg=issvg ? "" : " notsvg";
+        FOG.SCREEN.SVG("svg","currMap","preload"+notsvg,null,"map");
         FOG.SCREEN.SVG("image","mappath",null,null,"currMap");
         var img = document.getElementById("mappath");
-        img.setAttribute("href",FOG.CORE.DATA.GET("svgpath"));
+        img.setAttribute("href",FOG.CORE.DATA.GET("svgpath")); //if (!issvg){var scale = FOG.CORE.DATA.GET("scale")||1;var pct = 100 / scale /2 * .8; img.style.height=pct+"%";}
       }
       var _svgCORSinit=function(elem){
         elem.id="currMap";elem.classList+="preload";
@@ -953,7 +962,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
             }
         if ((mode=="char"||mode=="torch")&&onPath){
             var char = FOG.CORE.CHAR.AT();
-            var sq = char.square;
+            var sq = char.square||FOG.OPTS.GET("square");
             var cbox = document.getElementById(char.name).getBoundingClientRect();
             var px = e.clientX - cbox.left- sq*zm;
             var py = e.clientY - cbox.top- sq*zm;
@@ -1000,7 +1009,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
       var _try=function(pt){      
         try{
           var rect = mappath.getBoundingClientRect();
-          var sq = FOG.CORE.CHAR.AT().square; var cpos=FOG.OPTS.GET("cpos"); var cid=FOG.CORE.CHAR.AT().id;
+          var sq = FOG.CORE.CHAR.AT().square||FOG.OPTS.GET("square"); var cpos=FOG.OPTS.GET("cpos"); var cid=FOG.CORE.CHAR.AT().id;
             var cbox = document.getElementById(cid).getBoundingClientRect();
           var event = new Event('click');
           event.clientX =Math.round(pt.x-cpos.x +(window.innerWidth/2));
@@ -1040,9 +1049,10 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         ci.style.left=cc.pos.x+"px";
         ci.style.top=cc.pos.y+"px";
         FOG.CORE.DATA.SET(cc.name,cc); 
-        cc.moves-=1;
+        cc.moves-=1;  console.log("moving",cc.name);
             FOG.KEY.CHK("c");
       };
+      ///// This function auto-marches all the characters in the list
       var _march = function (index){
         if(FOG.OPTS.GET("march")==true && FOG.OPTS.CHAR[0].moves==0 && index==0){ 
           var oldpos=FOG.OPTS.GET("opos");
@@ -1090,9 +1100,9 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         
       }
       var _clickmove=function(pt){   
-          var cc = FOG.CORE.CHAR.AT(); var index=FOG.OPTS.CHAR.findIndex(i => i.name == cc.name);  
+          var cc = FOG.CORE.CHAR.AT(); var index=FOG.OPTS.CHAR.findIndex(i => i.name == cc.name);   console.log("clicked for",index,cc.name);
           var dist =Math.sqrt(Math.pow(pt.x- cc.pos.x,2) + Math.pow(pt.y-cc.pos.y,2));
-            var max = FOG.OPTS.GET("scale")*FOG.OPTS.GET("fogsize")/2*(FOG.OPTS.GET("zoom"));  
+            var max = FOG.OPTS.GET("scale")*FOG.OPTS.GET("lradius");  
           var _clickshort=function(){
             if (FOG.OPTS.GET("locked")){  
               setTimeout(function (){
@@ -1177,48 +1187,6 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           var ptstr = cx+" "+cy+" "+ccw.x+" "+ccw.y+" "+cw.x+" "+cw.y+" "+cx+" "+cy; FOG.CORE.LOG("beam at",ptstr);
           FOG.SCREEN.SVG("polygon","beam-"+cc.name,"lit",{"points":ptstr,"stroke":"none"},"currMap");
           FOG.SCREEN.SVG("polygon","mask-"+cc.name,"seen",{"points":ptstr,"stroke":"none"},"mask");
-          /*
-                var _beamarray=function(start,direction){ direction=direction||"S";
-                var barray=[];
-                var xAmt=0,yAmt=0;var xOff=0;yOff=0;
-                switch (direction){
-                  case "N": yAmt=-1; xOff=1;
-                    break;
-                  case "S": yAmt=1;  xOff=1;
-                    break;
-                  case "E": xAmt=1;  yOff=1;
-                    break;
-                  case "W": xAmt=-1; yOff=1;
-                    break;
-                }
-                
-                xAmt*=10; yAmt*=10; xOff*=10; yOff*=10;
-                for (var b=0;b<power;b++){ 
-                  barray.push({x:FOG.SCREEN.GRID.NEAR(start.x+(xAmt*b)+xOff,20),y:FOG.SCREEN.GRID.NEAR(start.y+(yAmt*b)+yOff,20),radius:2,type:"lit"});
-                }
-                switch(direction){
-                  case "N": 
-                    barray.sort((a, b) => (a.y < b.y) ? 1 : (a.y === b.y) ? ((a.x > b.x) ? 1 : -1) : -1 );
-                    break;
-                  case "S": 
-                    barray.sort((a, b) => (a.y > b.y) ? 1 : (a.y === b.y) ? ((a.x > b.x) ? 1 : -1) : -1 );
-                    break;
-                  case "E":
-                    barray.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1 );
-                    break;
-                  case "W": 
-                    barray.sort((a, b) => (a.x < b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1 );
-                    break;
-                }
-                return barray;
-              }
-              var pos={x:FOG.SCREEN.GRID.NEAR(cc.pos.x,20),y:FOG.SCREEN.GRID.NEAR(cc.pos.y,20)};
-              var face=cc.orient;FOG.CORE.LOG("beam for",cc.name,pos);
-              var ptsarray= FOG.CORE.DATA.DEDUPE(_beamarray(pos,face));
-              
-              var litarray=FOG.SCREEN.MAP.HITA(ptsarray,threshold);
-              FOG.SCREEN.GRID.SEEN(litarray);
-          */
         }
       };
       var _beamoff= function(){return FOG.OPTS.GET("beamoff");}
@@ -1261,30 +1229,6 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           FOG.SCREEN.INIT();
             FOG.ENTRY.NEWUI();
         }
-        var _startui = function(){
-
-          var startdiv = document.getElementById("startdiv"); if (startdiv!=null){startdiv.remove();}
-          startdiv = FOG.SCREEN.HTML("div","startdiv",document.getElementById("screen"),"splash");
-          var startbtn = FOG.SCREEN.HTML("div","start",startdiv,"ui");
-          startbtn.onclick=function(){
-            document.getElementById("startdiv").remove();
-          };
-          startbtn.innerText="Start New";
-          //if any stored Campaigns are found, present option to Use stored data
-          var saves = FOG.ENTRY.SAVES();
-          if (saves!=null && saves.config!=null){
-            var expbtn = FOG.SCREEN.HTML("div","export",startdiv,"ui");
-            expbtn.onclick=function(){
-              FOG.ENTRY.FULL("export");
-            };
-            expbtn.innerText="Export Save Data";
-          }
-          var impbtn = FOG.SCREEN.HTML("div","import",startdiv,"ui");
-          impbtn.onclick=function(){
-            FOG.ENTRY.FULL("save");
-          };
-          impbtn.innerText="Import Save Data";
-        }
         var _newcampaignui = function(){
           FOG.ENTRY.NONEW();
           var isNew=""; if (localStorage.length<1){isNew=" new";}
@@ -1296,8 +1240,12 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           var wright = FOG.SCREEN.HTML("div","wright",welcome,"right");
           var wtitle = FOG.SCREEN.HTML("h1",null,wmiddle,"title"); wtitle.innerText=FOG.OPTS.GET("welcometitle");
           var wtext = FOG.SCREEN.HTML("div",null,wmiddle,"text"); wtext.innerHTML=FOG.OPTS.GET("welcometext");
-          var mbed='<iframe src="https://www.youtube.com/embed/7karfJbCTkc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-          wleft.innerHTML=mbed;        
+          var mbed='<a href="https://www.youtube.com/embed/7karfJbCTkc" target="_blank">Youtube</a>';
+          if (isNew!=""){
+            mbed='<iframe src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+            wleft.innerHTML=mbed; 
+            } 
+                 
           var wdisclaimer = FOG.SCREEN.HTML("div","wbottom",welcome,"disclaimer");
           wdisclaimer.innerText=FOG.OPTS.GET("disclaimer")
           FOG.SCREEN.HTML("p","space",newdiv,"clear");
@@ -1310,7 +1258,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           deletebtn.innerHTML="<span class='dot'></span>Delete All (no undo!)";
           var importbtn = FOG.SCREEN.HTML("div","import",datadiv,"ui");
           importbtn.onclick=function(){
-            FOG.ENTRY.FULL("import");
+            FOG.ENTRY.FULL("save");
           };
           importbtn.innerHTML="<span class='dot'></span>Import Data";
           var exportbtn = FOG.SCREEN.HTML("div","export",datadiv,"ui");
@@ -1426,6 +1374,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
             FOG.SCREEN.HTML("p",null,d).innerHTML=option+content1+store.toUpperCase()+content2;
             var btn = FOG.SCREEN.HTML("input",null,d); btn.type="submit"; btn.value="Submit";
             btn.onclick=func;      d.appendChild(btn);
+            if (store=="config"){document.querySelector("#pathconfig .manualtxt").value=FOG.OPTS.GET("autoconfigpath");}
             if (twice){
               FOG.ENTRY.FULL(store);
             }
@@ -1528,9 +1477,11 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
             }
         }    
         var _getsvgcenter = function(){
-          document.querySelectorAll("#newui").forEach(el => el.remove());
+          document.querySelectorAll("#newdiv,#center").forEach(el => el.remove());
           FOG.SCREEN.HTML("div","center",document.getElementById("screen"),"splash");
-          FOG.SCREEN.SVG("svg","centersvg",null,null,"center");
+          var issvg = FOG.CORE.DATA.ISSVG();
+          var notsvg=issvg ? "" : "notsvg";
+          FOG.SCREEN.SVG("svg","centersvg",notsvg,null,"center");
           FOG.SCREEN.HTML("div","instr",document.getElementById("center"),"instr");  
           FOG.SCREEN.HTML("div","cbox",document.getElementById("center"));
           FOG.SCREEN.HTML("div","ctxt",document.getElementById("cbox")); ctxt.innerHTML="0,0";
@@ -1579,11 +1530,15 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           
           FOG.SCREEN.HTML("div","contbtn",cbox,"btn");
           contbtn.innerHTML="Continue";contbtn.onclick=function(){ 
-            FOG.CORE.DATA.SET("scale",FOG.OPTS.GET("scale"));
-            FOG.CORE.DATA.SET("pos",FOG.OPTS.GET("cpos")); 
-            FOG.ENTRY.GETREGIONS();
+            if (FOG.OPTS.GET("start")!=null){
+              var nonsvgcenter = FOG.CORE.DATA.ISSVG();  var scale = FOG.CORE.DATA.GET("scale")||1;
+              if (!nonsvgcenter){var temppt=FOG.OPTS.GET("cpos"); temppt.x+=(100/scale);temppt.y+= (100/scale); FOG.OPTS.SET("cpos",temppt); console.log("setting temp",temppt);}
+              FOG.CORE.DATA.SET("scale",FOG.OPTS.GET("scale"));
+              FOG.CORE.DATA.SET("pos",FOG.OPTS.GET("cpos")); 
+              FOG.ENTRY.GETREGIONS();
+            }
           };
-          var instr="Choose the starting position on your map, then zoom (+) to scale and readjust.  The green square is a 20-pixel person; the outside of the red circle is a 10-foot radius. Continue when done.";
+          var instr="Choose the starting position on your map, then zoom (+) to scale and readjust.  The green square is a 20-pixel person; the outside of the red circle is a 10-foot diameter. Continue when done.";
           document.getElementById("instr").innerText=instr;
         }
         var _resetforregions=function(){
@@ -1599,7 +1554,7 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
           FOG.ENTRY.CPOS = cpos;
           if (cpos.x!=null){           
             var scale = FOG.OPTS.GET("scale");
-            cpos={x:(cpos.x)*scale,y:(cpos.y)*scale}; console.log("setting Zero for",cpos);
+            cpos={x:(cpos.x)*scale,y:(cpos.y)*scale};
             FOG.OPTS.SET("cpos",cpos);
             var w = parseInt(window.innerWidth*.3); var h = parseInt(window.innerHeight*.3);
             centersvg.style.left=(-parseInt(cpos.x)+w)+"px"; 
@@ -1758,13 +1713,13 @@ var FOG=FOG||{};  //FOG = Friend of Gamers//
         var _escape=function(){
           if (document.getElementById("center")!=null){document.getElementById("center").remove(); }
           if (document.getElementById("newdiv")!=null){document.getElementById("newdiv").remove(); }
-          
+          FOG.CORE.DATA.LAP();
           FOG.CORE.INIT();
         }
     
         return {START:_start,SAVES:_findsaves,PROMPT:_prompts,LAUNCH:_launchcentering,MANUAL:_generalentry,PATH:_pathentry,FILE:_fileentry,CHECKFATAL:_checkFatal,
                 CHECK:_checkConfigPaths,CHECKCHAR:_checkCharpath,CHECKSVG:_checkSvgPath,FULL:_fullentry,FINISH:_escape,
-                CHECKUI:_checkui,STARTUI:_startui,NONEW:_nonew,NEWUI:_newcampaignui,CONFIGUI:_configui,CHARUI:_charui,
+                CHECKUI:_checkui,NONEW:_nonew,NEWUI:_newcampaignui,CONFIGUI:_configui,CHARUI:_charui,
                 PARSECONFIG:_parseconfig,CENTER:_getsvgcenter,SCALE:_setscale,ZERO:_zero,GETREGIONS:_getregions,ADDR:_startNewRegion,NEWR:_newregion,RRESET:_resetforregions
         };
   }();

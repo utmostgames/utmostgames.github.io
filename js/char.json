@@ -1,51 +1,12 @@
 [
   {
-    "name":"Pheargus",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5896/IIHVgt4iqHWyjLlp_W-u1A/max.png?1339995175",
-    "picOri":"S",
-    "square":20,
-    "special":["infra","arclight"]
+    "name":"Lu",
+    "src":"https://lh3.googleusercontent.com/fife/ABSRlIpqqBTVbtXByghtbIm0DcnMFKuSfZtGGPMHk-r8ilS9DE-sA4kU-LKV340y7-AL5AUB84AaVxU7jK9WlQgvy6K59xb9vyrcSsShOyZA6dzqGtkc7c71qvtdMFUzvC24CG-QeSsF9FXSBXlEJlbNLxZnLLQmpBpGDH8EVjLn1BZqhv6hnQOz1tlJMzqUePhE1BVP_Vda4YgA2SW_CqXikKsTaqjE-hV1vaC55Eh9iFoflj3uIR1hQOja9JHFjLeRxO_wmCbommcQ2m1XeO7btqm8OF6b2RBr9g_t-F1iIuPhXMjryBEHVbLjn1frPiaMMIFgDHRuw32oS1lX2weuGKxJU7OYkiMHsoRJPaXKEMkit0ZPBD_2cZq46GEcG2lw_rn-bBW8P5zwAdxxI_3pkXODgWJBQbbt91fLQQtbPiqEyx91k-MHoX5cn4-vOdRwCcS1tB568RuXWTmgQtuyaRHREfCidxmYoltxEPmwGWB54E_M8tnEvvLOQ-Ocv3P_lG9EGnX5rsTMqExWaTkDcmcuQ6T3jrH2grDGJxs44_zXgXB1l96Bkyk20O6n2CQjlxVfO9SeUaih_s9qC-OA8dQ8xkyxkX5E6ftX6hVDtrdFcTZRm6_mV1F6h35BEEZcqynx_j6XlJ7GUAHcdoJJr7x-iHnoECWCdcqLuF8rxHtLz1GTDiyAouxDaCFSj1QETdrvC8PxG2_vvPDeBFShlvIlPoDHMDcgSw=w3840-h1932-ft",
+    "picOri":"S"
   },
   {
-    "name":"Gilbert",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
-    "picOri":"S", 
-    "square":20,
-    "special":["infra"]
-  },
-  {
-    "name":"Faison1",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
-    "picOri":"S", 
-    "square":20,
-    "special":[]
-  },
-  {
-    "name":"Faison2",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
-    "picOri":"S", 
-    "square":20,
-    "special":[]
-  },
-  {
-    "name":"Faison3",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
-    "picOri":"S", 
-    "square":20,
-    "special":[]
-  },
-  {
-    "name":"Faison4",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
-    "picOri":"S", 
-    "square":20,
-    "special":[]
-  },
-  {
-    "name":"Faison5",
-    "src":"https://s3.amazonaws.com/files.d20.io/marketplace/5895/41452QegTySGY-0KVGW5SA/max.png?1339995038", 
-    "picOri":"S", 
-    "square":20,
-    "special":[]
+    "name":"Bu",
+    "src":"https://lh3.googleusercontent.com/fife/ABSRlIpqqBTVbtXByghtbIm0DcnMFKuSfZtGGPMHk-r8ilS9DE-sA4kU-LKV340y7-AL5AUB84AaVxU7jK9WlQgvy6K59xb9vyrcSsShOyZA6dzqGtkc7c71qvtdMFUzvC24CG-QeSsF9FXSBXlEJlbNLxZnLLQmpBpGDH8EVjLn1BZqhv6hnQOz1tlJMzqUePhE1BVP_Vda4YgA2SW_CqXikKsTaqjE-hV1vaC55Eh9iFoflj3uIR1hQOja9JHFjLeRxO_wmCbommcQ2m1XeO7btqm8OF6b2RBr9g_t-F1iIuPhXMjryBEHVbLjn1frPiaMMIFgDHRuw32oS1lX2weuGKxJU7OYkiMHsoRJPaXKEMkit0ZPBD_2cZq46GEcG2lw_rn-bBW8P5zwAdxxI_3pkXODgWJBQbbt91fLQQtbPiqEyx91k-MHoX5cn4-vOdRwCcS1tB568RuXWTmgQtuyaRHREfCidxmYoltxEPmwGWB54E_M8tnEvvLOQ-Ocv3P_lG9EGnX5rsTMqExWaTkDcmcuQ6T3jrH2grDGJxs44_zXgXB1l96Bkyk20O6n2CQjlxVfO9SeUaih_s9qC-OA8dQ8xkyxkX5E6ftX6hVDtrdFcTZRm6_mV1F6h35BEEZcqynx_j6XlJ7GUAHcdoJJr7x-iHnoECWCdcqLuF8rxHtLz1GTDiyAouxDaCFSj1QETdrvC8PxG2_vvPDeBFShlvIlPoDHMDcgSw=w3840-h1932-ft",
+    "picOri":"S"
   }
 ]

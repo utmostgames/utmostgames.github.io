@@ -1,10 +1,7 @@
 {
     "svg":[
-        {"path":"/img/hcourt_n.svg"},
-        {"path":"https://svgur.com/i/XEN.svg"},
-        {"path":"/img/maze.svg","start":"731,513"}
+        {"path":"https://rpgcharacters.files.wordpress.com/2020/01/mentzer-dungeon.png"}
     ], 
     "opts":[],
-    "charpath":"/js/char.json",
-    "face":"S"
+    "charpath":"/js/char.json"
 }
